@@ -14,6 +14,9 @@
     "doctrine/lexer": {
         "version": "1.2.0"
     },
+    "monolog/monolog": {
+        "version": "2.0.2"
+    },
     "php": {
         "version": "7.3"
     },
@@ -124,6 +127,23 @@
     },
     "symfony/mime": {
         "version": "v5.0.7"
+    },
+    "symfony/monolog-bridge": {
+        "version": "v5.0.8"
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "a89f4cd8a232563707418eea6c2da36acd36a917"
+        },
+        "files": [
+            "config/packages/dev/monolog.yaml",
+            "config/packages/prod/monolog.yaml",
+            "config/packages/test/monolog.yaml"
+        ]
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.15.0"
