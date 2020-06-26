@@ -1,4 +1,4 @@
-App\Entity\Book:
+App\Form\Model\BookDto:
     properties:
         title:
             - NotBlank: ~

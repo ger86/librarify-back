@@ -4,3 +4,5 @@ App\Entity\Book:
             groups: ['book']
         title:
             groups: ['book']
+        image:
+            groups: ['book']
