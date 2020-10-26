@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.10",
+        "friendsofsymfony/rest-bundle": "^3.0",
         "league/flysystem-bundle": "^1.5",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/console": "5.0.*",

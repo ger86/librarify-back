@@ -75,6 +75,9 @@
     "doctrine/reflection": {
         "version": "1.2.1"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
+    },
     "friendsofsymfony/rest-bundle": {
         "version": "2.2",
         "recipe": {
@@ -82,13 +85,7 @@
             "branch": "master",
             "version": "2.2",
             "ref": "cad41ef93d6150067ae2bb3c7fd729492dff6f0a"
-        },
-        "files": [
-            "config/packages/fos_rest.yaml"
-        ]
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
+        }
     },
     "league/flysystem": {
         "version": "1.0.69"
@@ -105,6 +102,9 @@
             "config/packages/flysystem.yaml",
             "var/storage/.gitignore"
         ]
+    },
+    "league/mime-type-detection": {
+        "version": "1.5.1"
     },
     "monolog/monolog": {
         "version": "2.0.2"
@@ -312,11 +312,17 @@
     "symfony/polyfill-intl-idn": {
         "version": "v1.15.0"
     },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.20.0"
+    },
     "symfony/polyfill-mbstring": {
         "version": "v1.15.0"
     },
     "symfony/polyfill-php73": {
         "version": "v1.15.0"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.20.0"
     },
     "symfony/property-access": {
         "version": "v5.0.10"
