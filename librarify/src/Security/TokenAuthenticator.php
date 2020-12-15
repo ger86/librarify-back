@@ -13,8 +13,12 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
-    const TOKEN = 'LIBRARIFY';
+    private $appApiToken;
 
+    public function __construct(string $appApiToken)
+    {
+        $this->appApiToken = $appApiToken;
+    }
     /**
      * Called on every request to decide if this authenticator should be
      * used for the request. Returning `false` will cause this authenticator
@@ -36,7 +40,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        if (self::TOKEN !== $credentials) {
+        if ($this->appApiToken !== $credentials) {
             return null;
         }
         return new User();
