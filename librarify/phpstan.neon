@@ -1,0 +1,11 @@
+parameters:
+    level: 3
+    paths: 
+        - src
+    excludes_analyse:
+        - %rootDir%/src/Migrations
+    symfony:
+        container_xml_path: 'var/cache/dev/App_KernelDevDebugContainer.xml'
+    doctrine:
+        objectManagerLoader: build/phpstan/doctrine-orm-bootstrap.php
+        repositoryClass: Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository

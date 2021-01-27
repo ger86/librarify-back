@@ -47,7 +47,7 @@ class BookFormProcessor
         if ($form->isValid()) {
             // Remove categories
             foreach ($originalCategories as $originalCategoryDto) {
-                if (!in_array($originalCategoryDto, $bookDto->categories)) {
+                if (!\in_array($originalCategoryDto, $bookDto->categories)) {
                     $category = $this->categoryManager->find($originalCategoryDto->id);
                     $book->removeCategory($category);
                 }
