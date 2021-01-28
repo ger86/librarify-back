@@ -1,0 +1,25 @@
+App\Entity\Category:
+    type: entity
+    table: category
+    repositoryClass: App\Repository\CategoryRepository
+    id:
+        id:
+            type: uuid
+    fields:
+        name:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: false
+            precision: 0
+    manyToMany:
+        books:
+            targetEntity: App\Entity\Book
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: categories
+            inversedBy: null
+            joinTable: {  }
+            orderBy: null
+    lifecycleCallbacks: {  }

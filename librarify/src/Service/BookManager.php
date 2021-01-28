@@ -5,6 +5,8 @@ namespace App\Service;
 use App\Entity\Book;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class BookManager
 {
@@ -18,7 +20,7 @@ class BookManager
         $this->bookRepository = $bookRepository;
     }
 
-    public function find(int $id): ?Book
+    public function find(UuidInterface $id): ?Book
     {
         return $this->bookRepository->find($id);
     }
@@ -30,7 +32,7 @@ class BookManager
 
     public function create(): Book
     {
-        $book = new Book();
+        $book = new Book(Uuid::uuid4());
         return $book;
     }
 

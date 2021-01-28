@@ -1,0 +1,43 @@
+App\Entity\Book:
+    type: entity
+    table: book
+    repositoryClass: App\Repository\BookRepository
+    id:
+        id:
+            type: uuid
+    fields:
+        title:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: false
+            precision: 0
+        image:
+            type: string
+            scale: 0
+            length: 512
+            unique: false
+            nullable: true
+            precision: 0
+    manyToMany:
+        categories:
+            targetEntity: App\Entity\Category
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: books
+            joinTable:
+                name: book_category
+                joinColumns:
+                    -
+                        name: book_id
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    -
+                        name: category_id
+                        referencedColumnName: id
+                        onDelete: CASCADE
+            orderBy: null
+    lifecycleCallbacks: {  }
