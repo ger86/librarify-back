@@ -7,6 +7,8 @@ use App\Entity\Book;
 class BookDto
 {
     public ?string $title = null;
+    public ?string $description = null;
+    public ?int $score = null;
     public ?string $base64Image = null;
     /** @var \App\Form\Model\CategoryDto[]|null */
     public ?array $categories = [];
@@ -44,5 +46,16 @@ class BookDto
     public function getCategories(): ?array
     {
         return $this->categories;
+    }
+
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 }

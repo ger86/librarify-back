@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Book\Score;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
@@ -11,15 +12,21 @@ class Book
 {
     private UuidInterface $id;
 
-    private $title;
+    private string $title;
 
-    private $image;
+    private ?string $image;
 
-    private $categories;
+    /** @var Collection|Category[] */
+    private Collection $categories;
+
+    private Score $score;
+
+    private ?string $description;
 
     public function __construct(UuidInterface $uuid)
     {
         $this->id = $uuid;
+        $this->score = Score::create();
         $this->categories = new ArrayCollection();
     }
 
@@ -81,5 +88,58 @@ class Book
         }
 
         return $this;
+    }
+
+    public function updateCategories(Category ...$categories)
+    {
+        /** @var Category[]|ArrayCollection */
+        $originalCategories = new ArrayCollection();
+        foreach ($this->categories as $category) {
+            $originalCategories->add($category);
+        }
+
+        // Remove categories
+        foreach ($originalCategories as $originalCategory) {
+            if (!\in_array($originalCategory, $categories)) {
+                $this->removeCategory($originalCategory);
+            }
+        }
+
+        // Add categories
+        foreach ($categories as $newCategory) {
+            if (!$originalCategories->contains(!$newCategory)) {
+                $this->addCategory($newCategory);
+            }
+        }
+    }
+
+    public function update(
+        string $title,
+        ?string $image,
+        ?string $description,
+        ?Score $score,
+        Category ...$categories
+    ) {
+        $this->title = $title;
+        $this->image = $image;
+        $this->description = $description;
+        $this->score = $score;
+        $this->updateCategories(...$categories);
+    }
+
+    public function setScore(Score $score): self
+    {
+        $this->score = $score;
+        return $this;
+    }
+
+    public function getScore(): Score
+    {
+        return $this->score;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 }

@@ -1,0 +1,4 @@
+App\Entity\Book\Score:
+    type: embeddable
+    fields: 
+        value: { type: integer, nullable: true }

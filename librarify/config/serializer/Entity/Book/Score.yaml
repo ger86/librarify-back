@@ -1,0 +1,4 @@
+App\Entity\Book\Score:
+    attributes:
+        value:
+            groups: ['book']
