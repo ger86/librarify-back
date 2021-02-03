@@ -26,6 +26,12 @@ App\Entity\Book:
             unique: false
             nullable: true
             precision: 0
+        createdAt:
+            type: datetime
+            nullable: true
+        readAt:
+            type: date
+            nullable: true
     embedded: 
         score:
             class: App\Entity\Book\Score

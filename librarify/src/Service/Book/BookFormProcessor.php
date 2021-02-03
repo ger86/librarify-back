@@ -9,11 +9,9 @@ use App\Form\Model\BookDto;
 use App\Form\Model\CategoryDto;
 use App\Form\Type\BookFormType;
 use App\Repository\BookRepository;
-use App\Repository\CategoryRepository;
 use App\Service\Category\CreateCategory;
 use App\Service\Category\GetCategory;
 use App\Service\FileUploader;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -49,7 +47,6 @@ class BookFormProcessor
         $bookDto = null;
 
         if ($bookId === null) {
-            $book = Book::create();
             $bookDto = BookDto::createEmpty();
         } else {
             $book = ($this->getBook)($bookId);
@@ -84,13 +81,26 @@ class BookFormProcessor
         if ($bookDto->getBase64Image()) {
             $filename = $this->fileUploader->uploadBase64File($bookDto->base64Image);
         }
-        $book->update(
-            $bookDto->getTitle(), 
-            $filename, 
-            $bookDto->getDescription(), 
-            Score::create($bookDto->getScore()), 
-            ...$categories
-        );
+
+        if ($book === null) {
+            $book = Book::create(
+                $bookDto->getTitle(),
+                $filename,
+                $bookDto->getDescription(),
+                Score::create($bookDto->getScore()),
+                $bookDto->getReadAt(),
+                ...$categories
+            );
+        } else {
+            $book->update(
+                $bookDto->getTitle(),
+                $filename,
+                $bookDto->getDescription(),
+                Score::create($bookDto->getScore()),
+                $bookDto->getReadAt(),
+                ...$categories
+            );
+        }
         $this->bookRepository->save($book);
         return [$book, null];
     }

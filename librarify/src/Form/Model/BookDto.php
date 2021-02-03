@@ -3,6 +3,7 @@
 namespace App\Form\Model;
 
 use App\Entity\Book;
+use DateTimeInterface;
 
 class BookDto
 {
@@ -12,6 +13,7 @@ class BookDto
     public ?string $base64Image = null;
     /** @var \App\Form\Model\CategoryDto[]|null */
     public ?array $categories = [];
+    public ?DateTimeInterface $readAt = null;
 
     public function __construct()
     {
@@ -27,6 +29,7 @@ class BookDto
     {
         $dto = new self();
         $dto->title = $book->getTitle();
+        $dto->score = $book->getScore()->getValue();
         return $dto;
     }
 
@@ -57,5 +60,10 @@ class BookDto
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public function getReadAt(): ?DateTimeInterface
+    {
+        return $this->readAt;
     }
 }
