@@ -9,6 +9,8 @@ use App\Form\Model\BookDto;
 use App\Form\Model\CategoryDto;
 use App\Form\Type\BookFormType;
 use App\Repository\BookRepository;
+use App\Service\Author\CreateAuthor;
+use App\Service\Author\GetAuthor;
 use App\Service\Category\CreateCategory;
 use App\Service\Category\GetCategory;
 use App\Service\FileUploader;
@@ -22,6 +24,8 @@ class BookFormProcessor
     private BookRepository $bookRepository;
     private CreateCategory $createCategory;
     private GetCategory $getCategory;
+    private CreateAuthor $createAuthor;
+    private GetAuthor $getAuthor;
     private FileUploader $fileUploader;
     private FormFactoryInterface $formFactory;
 
@@ -30,6 +34,8 @@ class BookFormProcessor
         BookRepository $bookRepository,
         GetCategory $getCategory,
         CreateCategory $createCategory,
+        CreateAuthor $createAuthor,
+        GetAuthor $getAuthor,
         FileUploader $fileUploader,
         FormFactoryInterface $formFactory
     ) {
@@ -37,6 +43,8 @@ class BookFormProcessor
         $this->bookRepository = $bookRepository;
         $this->createCategory = $createCategory;
         $this->getCategory = $getCategory;
+        $this->createAuthor = $createAuthor;
+        $this->getAuthor = $getAuthor;
         $this->fileUploader = $fileUploader;
         $this->formFactory = $formFactory;
     }
@@ -77,6 +85,18 @@ class BookFormProcessor
             $categories[] = $category;
         }
 
+        $authors = [];
+        foreach ($bookDto->getAuthors() as $newAuthorDto) {
+            $author = null;
+            if ($newAuthorDto->getId() !== null) {
+                $author = ($this->getAuthor)($newAuthorDto->getId());
+            }
+            if ($author === null) {
+                $author = ($this->createAuthor)($newAuthorDto->getName());
+            }
+            $authors[] = $author;
+        }
+
         $filename = null;
         if ($bookDto->getBase64Image()) {
             $filename = $this->fileUploader->uploadBase64File($bookDto->base64Image);
@@ -89,7 +109,8 @@ class BookFormProcessor
                 $bookDto->getDescription(),
                 Score::create($bookDto->getScore()),
                 $bookDto->getReadAt(),
-                ...$categories
+                $authors,
+                $categories
             );
         } else {
             $book->update(
@@ -98,7 +119,8 @@ class BookFormProcessor
                 $bookDto->getDescription(),
                 Score::create($bookDto->getScore()),
                 $bookDto->getReadAt(),
-                ...$categories
+                $authors,
+                $categories
             );
         }
         $this->bookRepository->save($book);

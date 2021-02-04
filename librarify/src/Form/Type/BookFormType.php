@@ -26,6 +26,11 @@ class BookFormType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'entry_type' => CategoryFormType::class
+            ])
+            ->add('authors', CollectionType::class, [
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_type' => AuthorFormType::class
             ]);
     }
 

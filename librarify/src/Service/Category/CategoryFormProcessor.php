@@ -29,7 +29,7 @@ class CategoryFormProcessor
     public function __invoke(Request $request, ?string $categoryId = null): array
     {
         $category = null;
-        $bookDto = null;
+        $categoryDto = null;
 
         if ($categoryId === null) {
             $categoryDto = new CategoryDto();

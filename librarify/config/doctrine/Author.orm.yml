@@ -1,0 +1,25 @@
+App\Entity\Author:
+    type: entity
+    table: author
+    repositoryClass: App\Repository\AuthorRepository
+    id:
+        id:
+            type: uuid
+    fields:
+        name:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: false
+            precision: 0
+    manyToMany:
+        books:
+            targetEntity: App\Entity\Book
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: authors
+            inversedBy: null
+            joinTable: {  }
+            orderBy: null
+    lifecycleCallbacks: {  }

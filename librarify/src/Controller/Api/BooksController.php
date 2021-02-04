@@ -70,6 +70,7 @@ class BooksController extends AbstractFOSRestController
             $data = $book ?? $error;
             return View::create($data, $statusCode);
         } catch (Throwable $t) {
+            var_dump($t->getMessage());
             return View::create('Book not found', Response::HTTP_BAD_REQUEST);
         }
     }

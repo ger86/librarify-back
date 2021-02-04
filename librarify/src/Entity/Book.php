@@ -21,6 +21,9 @@ class Book
     /** @var Collection|Category[] */
     private Collection $categories;
 
+    /** @var Collection|Author[] */
+    private Collection $authors;
+
     private Score $score;
 
     private ?string $description;
@@ -29,6 +32,16 @@ class Book
 
     private ?DateTimeInterface $readAt;
 
+    /**
+     * @param UuidInterface $uuid
+     * @param string $title
+     * @param string|null $image
+     * @param string|null $description
+     * @param Score|null $score
+     * @param DateTimeInterface|null $readAt
+     * @param Collection|Author[]|null $authors
+     * @param Collection|Category[] |null $categories
+     */
     public function __construct(
         UuidInterface $uuid,
         string $title,
@@ -36,6 +49,7 @@ class Book
         ?string $description,
         ?Score $score,
         ?DateTimeInterface $readAt,
+        ?Collection $authors,
         ?Collection $categories
     ) {
         $this->id = $uuid;
@@ -45,16 +59,28 @@ class Book
         $this->score = $score ?? Score::create();
         $this->readAt = $readAt;
         $this->categories = $categories ?? new ArrayCollection();
+        $this->authors = $authors ?? new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
     }
 
+    /**
+     * @param string $title
+     * @param string|null $image
+     * @param string|null $description
+     * @param Score|null $score
+     * @param DateTimeInterface|null $readAt
+     * @param array|Author[] $authors
+     * @param array|Category[] $categories
+     * @return self
+     */
     public static function create(
         string $title,
         ?string $image,
         ?string $description,
         ?Score $score,
         ?DateTimeInterface $readAt,
-        Category ...$categories
+        array $authors,
+        array $categories
     ): self {
         return new self(
             Uuid::uuid4(),
@@ -63,6 +89,7 @@ class Book
             $description,
             $score,
             $readAt,
+            new ArrayCollection($authors),
             new ArrayCollection($categories)
         );
     }
@@ -139,19 +166,79 @@ class Book
 
         // Add categories
         foreach ($categories as $newCategory) {
-            if (!$originalCategories->contains(!$newCategory)) {
+            if (!$originalCategories->contains($newCategory)) {
                 $this->addCategory($newCategory);
             }
         }
     }
 
+    /**
+     * @return Collection|Author[]
+     */
+    public function getAuthors(): Collection
+    {
+        return $this->authors;
+    }
+
+    public function addAuthor(Author $author): self
+    {
+        if (!$this->authors->contains($author)) {
+            $this->authors[] = $author;
+        }
+
+        return $this;
+    }
+
+    public function removeAuthor(Author $author): self
+    {
+        if ($this->authors->contains($author)) {
+            $this->authors->removeElement($author);
+        }
+
+        return $this;
+    }
+
+    public function updateAuthors(Author ...$authors)
+    {
+        /** @var Author[]|ArrayCollection */
+        $originalAuthors = new ArrayCollection();
+        foreach ($this->authors as $author) {
+            $originalAuthors->add($author);
+        }
+
+        // Remove authors
+        foreach ($originalAuthors as $originalAuthor) {
+            if (!\in_array($originalAuthor, $authors)) {
+                $this->removeAuthor($originalAuthor);
+            }
+        }
+
+        // Add authors
+        foreach ($authors as $newAuthor) {
+            if (!$originalAuthors->contains($newAuthor)) {
+                $this->addAuthor($newAuthor);
+            }
+        }
+    }
+
+    /**
+     * @param string $title
+     * @param string|null $image
+     * @param string|null $description
+     * @param Score|null $score
+     * @param DateTimeInterface $readAt
+     * @param array|Author[] $authors
+     * @param array|Category[] $categories
+     * @return void
+     */
     public function update(
         string $title,
         ?string $image,
         ?string $description,
         ?Score $score,
         DateTimeInterface $readAt,
-        Category ...$categories
+        array $authors,
+        array $categories
     ) {
         $this->title = $title;
         $this->image = $image;
@@ -159,6 +246,7 @@ class Book
         $this->score = $score;
         $this->readAt = $readAt;
         $this->updateCategories(...$categories);
+        $this->updateAuthors(...$authors);
     }
 
     public function setScore(Score $score): self

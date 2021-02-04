@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Form\Model\CategoryDto;
+use App\Form\Model\AuthorDto;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategoryFormType extends AbstractType
+class AuthorFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,7 +33,7 @@ class CategoryFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => CategoryDto::class,
+            'data_class' => AuthorDto::class,
             'csrf_protection' => false
         ]);
     }

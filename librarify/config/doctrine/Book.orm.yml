@@ -55,4 +55,23 @@ App\Entity\Book:
                         referencedColumnName: id
                         onDelete: CASCADE
             orderBy: null
+        authors:
+            targetEntity: App\Entity\Author
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: authors
+            joinTable:
+                name: book_author
+                joinColumns:
+                    -
+                        name: book_id
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    -
+                        name: author_id
+                        referencedColumnName: id
+                        onDelete: CASCADE
+            orderBy: null
     lifecycleCallbacks: {  }
