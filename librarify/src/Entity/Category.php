@@ -72,4 +72,9 @@ class Category
 
         return $this;
     }
+
+    public function update(string $name): self {
+        $this->name = $name;
+        return $this;
+    }
 }

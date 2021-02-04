@@ -2,35 +2,62 @@
 
 namespace App\Service\Category;
 
-
+use App\Entity\Category;
 use App\Form\Model\CategoryDto;
 use App\Form\Type\CategoryFormType;
+use App\Repository\CategoryRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class CategoryFormProcessor
 {
 
-    private CreateCategory $createCategory;
+    private GetCategory $getCategory;
+    private CategoryRepository $categoryRepository;
     private FormFactoryInterface $formFactory;
 
     public function __construct(
-        CreateCategory $createCategory,
+        GetCategory $getCategory,
+        CategoryRepository $categoryRepository,
         FormFactoryInterface $formFactory
     ) {
-        $this->createCategory = $createCategory;
+        $this->getCategory = $getCategory;
+        $this->categoryRepository = $categoryRepository;
         $this->formFactory = $formFactory;
     }
 
-    public function __invoke(Request $request): array
+    public function __invoke(Request $request, ?string $categoryId = null): array
     {
-        $categoryDto = new CategoryDto();
+        $category = null;
+        $bookDto = null;
+
+        if ($categoryId === null) {
+            $categoryDto = new CategoryDto();
+        } else {
+            $category = ($this->getCategory)($categoryId);
+            $categoryDto = CategoryDto::createFromCategory($category);
+        }
+        
         $form = $this->formFactory->create(CategoryFormType::class, $categoryDto);
         $form->handleRequest($request);
         if (!$form->isSubmitted()) {
             return [null, 'Form is not submitted'];
         }
-        $category = ($this->createCategory)($categoryDto->getName());
-        return [null, $category];
+        if (!$form->isValid()) {
+            return [null, $form];
+        }
+
+        if ($category === null) {
+            $category = Category::create(
+                $categoryDto->getName()
+            );
+        } else {
+            $category->update(
+                $categoryDto->getName()
+            );
+        }
+
+        $this->categoryRepository->save($category);
+        return [$category, null];
     }
 }
