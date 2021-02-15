@@ -241,7 +241,9 @@ class Book
         array $categories
     ) {
         $this->title = $title;
-        $this->image = $image;
+        if ($image !== null) {
+            $this->image = $image;
+        }
         $this->description = $description;
         $this->score = $score;
         $this->readAt = $readAt;
