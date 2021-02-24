@@ -4,7 +4,6 @@ namespace App\Service\Book;
 
 use App\Entity\Book;
 use App\Entity\Book\Score;
-use App\Entity\Category;
 use App\Form\Model\BookDto;
 use App\Form\Model\CategoryDto;
 use App\Form\Type\BookFormType;

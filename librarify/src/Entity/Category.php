@@ -27,7 +27,6 @@ class Category
         return new self(Uuid::uuid4(), $name);
     }
 
-
     public function getId(): UuidInterface
     {
         return $this->id;
@@ -76,5 +75,10 @@ class Category
     public function update(string $name): self {
         $this->name = $name;
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name ?? 'Categoría';
     }
 }

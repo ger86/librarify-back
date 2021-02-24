@@ -23,3 +23,23 @@ services:
         arguments:
             $appApiToken: '%app.api_token%'
 
+    admin.category:
+        class: App\Admin\CategoryAdmin
+        arguments: [~, App\Entity\Category, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Administador, label: "Categoría" }
+        public: true
+
+    admin.book:
+        class: App\Admin\BookAdmin
+        arguments: [~, App\Entity\Book, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Administador, label: "Libro" }
+        public: true
+
+    admin.author:
+        class: App\Admin\AuthorAdmin
+        arguments: [~, App\Entity\Author, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Administador, label: "Autor" }
+        public: true

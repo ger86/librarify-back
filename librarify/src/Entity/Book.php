@@ -287,4 +287,9 @@ class Book
     {
         return $this->readAt;
     }
+
+    public function __toString()
+    {
+        return $this->title ?? 'Libro';
+    }
 }

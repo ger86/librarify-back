@@ -77,4 +77,9 @@ class Author
         $this->name = $name;
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->name ?? 'Autor';
+    }
 }
