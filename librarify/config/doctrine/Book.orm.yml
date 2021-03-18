@@ -60,7 +60,7 @@ App\Entity\Book:
             cascade: {  }
             fetch: LAZY
             mappedBy: null
-            inversedBy: authors
+            inversedBy: books
             joinTable:
                 name: book_author
                 joinColumns:
