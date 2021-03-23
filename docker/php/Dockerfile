@@ -32,8 +32,7 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} >
     && "date"
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer --version \
-    && composer global require hirak/prestissimo
+    && composer --version
 
 WORKDIR /var/www/librarify
 RUN ls
