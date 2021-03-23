@@ -4,6 +4,7 @@ namespace App\Service\Book;
 
 use App\Entity\Book;
 use App\Entity\Book\Score;
+use App\Event\Book\BookCreatedEvent;
 use App\Form\Model\BookDto;
 use App\Form\Model\CategoryDto;
 use App\Form\Type\BookFormType;
@@ -15,6 +16,8 @@ use App\Service\Category\GetCategory;
 use App\Service\FileUploader;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+
 
 class BookFormProcessor
 {
@@ -27,6 +30,7 @@ class BookFormProcessor
     private GetAuthor $getAuthor;
     private FileUploader $fileUploader;
     private FormFactoryInterface $formFactory;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         GetBook $getBook,
@@ -36,7 +40,8 @@ class BookFormProcessor
         CreateAuthor $createAuthor,
         GetAuthor $getAuthor,
         FileUploader $fileUploader,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->getBook = $getBook;
         $this->bookRepository = $bookRepository;
@@ -46,6 +51,7 @@ class BookFormProcessor
         $this->getAuthor = $getAuthor;
         $this->fileUploader = $fileUploader;
         $this->formFactory = $formFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Request $request, ?string $bookId = null): array
@@ -123,6 +129,9 @@ class BookFormProcessor
             );
         }
         $this->bookRepository->save($book);
+        foreach ($book->pullDomainEvents() as $event) {
+            $this->eventDispatcher->dispatch($event);
+        }
         return [$book, null];
     }
 }
