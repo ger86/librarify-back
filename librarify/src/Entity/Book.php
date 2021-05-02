@@ -34,7 +34,7 @@ class Book
 
     private ?DateTimeInterface $readAt;
 
-    private array $domainEvents;
+    private array $domainEvents = [];
 
     /**
      * @param UuidInterface $uuid
