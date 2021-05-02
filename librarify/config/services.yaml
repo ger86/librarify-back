@@ -23,6 +23,8 @@ services:
         arguments:
             $appApiToken: '%app.api_token%'
 
+    App\Service\Utils\HttpClientInterface: '@App\Service\Utils\HttpClient'
+
     admin.category:
         class: App\Admin\CategoryAdmin
         arguments: [~, App\Entity\Category, ~]

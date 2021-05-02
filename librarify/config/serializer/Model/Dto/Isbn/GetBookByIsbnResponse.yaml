@@ -1,0 +1,8 @@
+App\Model\Dto\Isbn\GetBookByIsbnResponse:
+    attributes:
+        numberOfPages:
+            groups: ['get_book_by_isbn']
+        title:
+            groups: ['get_book_by_isbn']
+        publishDate:
+            groups: ['get_book_by_isbn']
