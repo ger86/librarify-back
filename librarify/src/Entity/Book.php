@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use DomainException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -265,6 +266,21 @@ class Book
         $this->readAt = $readAt;
         $this->updateCategories(...$categories);
         $this->updateAuthors(...$authors);
+    }
+
+    public function patch(array $data): self
+    {
+        if (array_key_exists('score', $data)) {
+            $this->score = Score::create($data['score']);
+        }
+        if (array_key_exists('title', $data)) {
+            $title = $data['title'];
+            if ($title === null) {
+                throw new DomainException('Title cannot be null');
+            }
+            $this->title = $title;
+        }
+        return $this;
     }
 
     public function setScore(Score $score): self

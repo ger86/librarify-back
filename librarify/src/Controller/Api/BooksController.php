@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Book;
 use App\Repository\BookRepository;
 use App\Service\Book\DeleteBook;
 use App\Service\Book\GetBook;
@@ -56,7 +55,7 @@ class BooksController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post(path="/books/{id}")
+     * @Rest\Put(path="/books/{id}")
      * @Rest\View(serializerGroups={"book"}, serializerEnableMaxDepthChecks=true)
      */
     public function editAction(
@@ -72,6 +71,21 @@ class BooksController extends AbstractFOSRestController
         } catch (Throwable $t) {
             return View::create('Book not found', Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    /**
+     * @Rest\Patch(path="/books/{id}")
+     * @Rest\View(serializerGroups={"book"}, serializerEnableMaxDepthChecks=true)
+     */
+    public function patchAction(
+        string $id,
+        GetBook $getBook,
+        Request $request
+    ) {
+        $book = ($getBook)($id);
+        $data = json_decode($request->getContent(), true);
+        $book->patch($data);
+        return View::create($book, Response::HTTP_OK);
     }
 
     /**
