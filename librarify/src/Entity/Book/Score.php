@@ -2,9 +2,10 @@
 
 namespace App\Entity\Book;
 
+use App\Model\ValueObjectInterface;
 use InvalidArgumentException;
 
-class Score
+class Score implements ValueObjectInterface
 {
     public ?int $value = null;
 

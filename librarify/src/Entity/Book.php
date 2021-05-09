@@ -270,10 +270,10 @@ class Book
 
     public function patch(array $data): self
     {
-        if (array_key_exists('score', $data)) {
+        if (\array_key_exists('score', $data)) {
             $this->score = Score::create($data['score']);
         }
-        if (array_key_exists('title', $data)) {
+        if (\array_key_exists('title', $data)) {
             $title = $data['title'];
             if ($title === null) {
                 throw new DomainException('Title cannot be null');

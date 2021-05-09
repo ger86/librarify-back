@@ -18,7 +18,7 @@ class GetBookByIsbn
     public function __invoke(string $isbn): GetBookByIsbnResponse
     {
         $response = $this->httpClient->request(
-            'GET', 
+            'GET',
             sprintf('https://openlibrary.org/isbn/%s.json', $isbn)
         );
         $statusCode = $response->getStatusCode();

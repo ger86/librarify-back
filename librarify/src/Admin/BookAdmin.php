@@ -13,7 +13,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 final class BookAdmin extends AbstractAdmin
 {
-    public function getNewInstance(): object
+    protected function createNewInstance(): object
     {
         return Book::create('', null, '', null, null, [], []);
     }

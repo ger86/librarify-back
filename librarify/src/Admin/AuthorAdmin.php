@@ -14,7 +14,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 final class AuthorAdmin extends AbstractAdmin
 {
 
-    public function getNewInstance(): object
+    protected function createNewInstance(): object
     {
         return Author::create('');
     }

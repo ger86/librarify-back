@@ -13,7 +13,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
-    private $appApiToken;
+    private string $appApiToken;
 
     public function __construct(string $appApiToken)
     {

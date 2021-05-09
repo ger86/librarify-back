@@ -13,7 +13,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 final class CategoryAdmin extends AbstractAdmin
 {
-    public function getNewInstance(): object
+    protected function createNewInstance(): object
     {
         return Category::create('');
     }

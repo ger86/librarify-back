@@ -3,7 +3,6 @@
 namespace App\Serializer;
 
 use App\Entity\Book\Score;
-use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
