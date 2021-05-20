@@ -1,0 +1,22 @@
+App\Entity\User:
+    type: entity
+    table: app_user
+    repositoryClass: App\Repository\UserRepository
+    id:
+        id:
+            type: uuid
+    fields:
+        email:
+            type: string
+            scale: 0
+            length: 512
+            unique: true
+            nullable: false
+            precision: 0
+        password:
+            type: string
+            scale: 0
+            length: 512
+            unique: false
+            nullable: false
+            precision: 0
