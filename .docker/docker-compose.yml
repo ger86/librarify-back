@@ -17,26 +17,26 @@ services:
             - symfony
     php:
         build:
-            context: .
-            dockerfile: docker/php/Dockerfile
+            context: ./php
             args:
                 TIMEZONE: ${TIMEZONE}
         volumes:
-            - ./librarify/:/var/www/librarify/
+            - librarifyback_app_sync:/var/www/librarify/
         networks:
             - symfony
     nginx:
         build:
-            context: .
-            dockerfile: docker/nginx/Dockerfile
+            context: ./nginx
         volumes:
-            - ./librarify/:/var/www/librarify/
+            - librarifyback_app_sync:/var/www/librarify/
         ports:
             - 80:80
         networks:
             - symfony
 
 volumes:
+    librarifyback_app_sync:
+        external: true
     db_librarify:
 
 networks:

@@ -1,0 +1,22 @@
+version: '2'
+
+options:
+  compose-file-path: 'docker-compose.yml'
+  verbose: true
+
+syncs:
+    librarifyback_app_sync:
+        src: '../'
+        sync_userid: '33'
+        sync_excludes:
+            - '.docker'
+            - '.git' 
+            - 'var' 
+            - 'vendor'
+            - 'bin/.phpunit'
+        watch_excludes:
+            - '.docker'
+            - '.git' 
+            - 'var' 
+            - 'vendor'
+            - 'bin/.phpunit'
