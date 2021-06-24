@@ -135,6 +135,9 @@
             "config/packages/fos_rest.yaml"
         ]
     },
+    "gesdinet/jwt-refresh-token-bundle": {
+        "version": "v0.12.0"
+    },
     "habbim/id-to-uuid": {
         "version": "dev-master"
     },
