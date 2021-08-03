@@ -9,6 +9,7 @@
         "friendsofsymfony/rest-bundle": "3.0.*",
         "gesdinet/jwt-refresh-token-bundle": "^0.12.0",
         "habbim/id-to-uuid": "dev-master",
+        "league/csv": "^9.7",
         "league/flysystem-bundle": "1.5.*",
         "lexik/jwt-authentication-bundle": "^2.11",
         "ramsey/uuid-doctrine": "1.6.*",

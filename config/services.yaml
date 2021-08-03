@@ -24,6 +24,7 @@ services:
             $appApiToken: '%app.api_token%'
 
     App\Service\Utils\HttpClientInterface: '@App\Service\Utils\HttpClient'
+    App\Service\Utils\WriteCsvInterface: '@App\Service\Utils\WriteCsv'
 
     admin.category:
         class: App\Admin\CategoryAdmin
@@ -72,3 +73,7 @@ services:
                 method: onAuthenticationSuccessResponse,
                 priority: -1000,
             }
+    
+    App\Service\Book\ExportInCsv:
+        arguments:
+            $projectFolder: '%kernel.project_dir%'
