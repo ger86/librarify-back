@@ -37,6 +37,8 @@ class Book
 
     private array $domainEvents = [];
 
+    private ?Isbn $isbn;
+
     /**
      * @param UuidInterface $uuid
      * @param string $title
@@ -46,6 +48,8 @@ class Book
      * @param DateTimeInterface|null $readAt
      * @param Collection|Author[]|null $authors
      * @param Collection|Category[] |null $categories
+     * @param string $isbn
+     * @param string $isbnLong
      */
     public function __construct(
         UuidInterface $uuid,
@@ -55,7 +59,9 @@ class Book
         ?Score $score,
         ?DateTimeInterface $readAt,
         ?Collection $authors,
-        ?Collection $categories
+        ?Collection $categories,
+        string $isbn,
+        string $isbnLong
     ) {
         $this->id = $uuid;
         $this->title = $title;
@@ -66,6 +72,7 @@ class Book
         $this->categories = $categories ?? new ArrayCollection();
         $this->authors = $authors ?? new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
+        $this->isbn = new Isbn(Uuid::uuid4(), $isbn, $isbnLong, $this);
     }
 
     /**
@@ -76,6 +83,8 @@ class Book
      * @param DateTimeInterface|null $readAt
      * @param array|Author[] $authors
      * @param array|Category[] $categories
+     * @param string $isbn
+     * @param string $isbnLong
      * @return self
      */
     public static function create(
@@ -85,7 +94,9 @@ class Book
         ?Score $score,
         ?DateTimeInterface $readAt,
         array $authors,
-        array $categories
+        array $categories,
+        string $isbn,
+        string $isbnLong
     ): self {
         $book = new self(
             Uuid::uuid4(),
@@ -95,7 +106,9 @@ class Book
             $score,
             $readAt,
             new ArrayCollection($authors),
-            new ArrayCollection($categories)
+            new ArrayCollection($categories),
+            $isbn,
+            $isbnLong
         );
         $book->addDomainEvent(new BookCreatedEvent($book->getId()));
         return $book;
@@ -255,7 +268,9 @@ class Book
         ?Score $score,
         ?DateTimeInterface $readAt,
         array $authors,
-        array $categories
+        array $categories,
+        string $isbn,
+        string $isbnLong
     ) {
         $this->title = $title;
         if ($image !== null) {
@@ -264,6 +279,11 @@ class Book
         $this->description = $description;
         $this->score = $score;
         $this->readAt = $readAt;
+        if ($this->isbn === null) {
+            $this->isbn = new Isbn(Uuid::uuid4(), $isbn, $isbnLong, $this);
+        } else {
+            $this->isbn->update($isbn, $isbnLong);
+        }
         $this->updateCategories(...$categories);
         $this->updateAuthors(...$authors);
     }
@@ -323,5 +343,10 @@ class Book
     public function __toString()
     {
         return $this->title ?? 'Libro';
+    }
+
+    public function getIsbn(): ?Isbn
+    {
+        return $this->isbn;
     }
 }

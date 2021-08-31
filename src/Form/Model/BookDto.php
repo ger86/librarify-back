@@ -16,6 +16,7 @@ class BookDto
     /** @var \App\Form\Model\AuthorDto[]|null */
     public ?array $authors = [];
     public ?DateTimeInterface $readAt = null;
+    public ?IsbnDto $isbn = null;
 
     public function __construct()
     {
@@ -34,6 +35,7 @@ class BookDto
         $dto->score = $book->getScore()->getValue();
         $dto->description = $book->getDescription();
         $dto->readAt = $book->getReadAt();
+        $dto->isbn = $book->getIsbn() === null ? null : IsbnDto::createFromIsbn($book->getIsbn($book->getIsbn()));
         return $dto;
     }
 
@@ -76,5 +78,10 @@ class BookDto
     public function getReadAt(): ?DateTimeInterface
     {
         return $this->readAt;
+    }
+
+    public function getIsbn(): ?IsbnDto
+    {
+        return $this->isbn;
     }
 }

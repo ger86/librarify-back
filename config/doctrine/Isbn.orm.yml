@@ -1,0 +1,22 @@
+App\Entity\Isbn:
+    type: entity
+    table: isbn
+    id:
+        id:
+            type: uuid
+        isbn:
+            type: string
+            length: 255
+            nullable: false
+        isbnLong:
+            type: string
+            length: 255
+            nullable: false
+    oneToOne:
+        book:
+            targetEntity: App\Entity\Book
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: isbn
+           

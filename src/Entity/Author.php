@@ -11,9 +11,10 @@ class Author
 {
     private UuidInterface $id;
 
-    private $name;
+    private string $name;
 
-    private $books;
+    /** @var Collection<int,Book> $books */
+    private Collection $books;
 
     public function __construct(UuidInterface $uuid, string $name)
     {
@@ -46,7 +47,7 @@ class Author
     }
 
     /**
-     * @return Collection|Book[]
+     * @return Collection<int,Book> $books
      */
     public function getBooks(): Collection
     {
@@ -73,7 +74,8 @@ class Author
         return $this;
     }
 
-    public function update(string $name): self {
+    public function update(string $name): self
+    {
         $this->name = $name;
         return $this;
     }

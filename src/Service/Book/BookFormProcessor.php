@@ -114,7 +114,9 @@ class BookFormProcessor
                 Score::create($bookDto->getScore()),
                 $bookDto->getReadAt(),
                 $authors,
-                $categories
+                $categories,
+                $bookDto->isbn->getIsbn(),
+                $bookDto->isbn->getIsbnLong()
             );
         } else {
             $book->update(
@@ -124,7 +126,9 @@ class BookFormProcessor
                 Score::create($bookDto->getScore()),
                 $bookDto->getReadAt(),
                 $authors,
-                $categories
+                $categories,
+                $bookDto->isbn->getIsbn(),
+                $bookDto->isbn->getIsbnLong()
             );
         }
         $this->bookRepository->save($book);

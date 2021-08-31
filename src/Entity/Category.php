@@ -11,9 +11,10 @@ class Category
 {
     private UuidInterface $id;
 
-    private $name;
+    private string $name;
 
-    private $books;
+    /** @var Collection<int,Book> $books */
+    private Collection $books;
 
     public function __construct(UuidInterface $uuid, string $name)
     {
@@ -45,7 +46,7 @@ class Category
     }
 
     /**
-     * @return Collection|Book[]
+     * @return Collection<int,Book>
      */
     public function getBooks(): Collection
     {
@@ -72,7 +73,8 @@ class Category
         return $this;
     }
 
-    public function update(string $name): self {
+    public function update(string $name): self
+    {
         $this->name = $name;
         return $this;
     }
