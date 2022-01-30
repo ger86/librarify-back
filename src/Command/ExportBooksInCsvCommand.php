@@ -11,11 +11,8 @@ class ExportBooksInCsvCommand extends Command
 {
     protected static $defaultName = 'app:books:export-in-csv';
 
-    private ExportInCsv $exportInCsv;
-
-    public function __construct(ExportInCsv $exportInCsv)
+    public function __construct(private ExportInCsv $exportInCsv)
     {
-        $this->exportInCsv = $exportInCsv;
         parent::__construct();
     }
 
@@ -25,5 +22,4 @@ class ExportBooksInCsvCommand extends Command
         $output->writeln('CSV wrote successfully');
         return Command::SUCCESS;
     }
-
 }

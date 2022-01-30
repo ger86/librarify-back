@@ -2,20 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
 {
-    private UuidInterface $id;
-    private string $email;
     private array $roles = [];
     private string $password;
 
     public function __construct(
-        UuidInterface $id,
-        string $email
+        private UuidInterface $id,
+        private string $email
     ) {
         $this->id = $id;
         $this->email = $email;
@@ -29,6 +26,11 @@ class User implements UserInterface
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getUserIdentifier()
+    {
+        return $this->getEmail();
     }
 
     public function setEmail(string $email): self

@@ -7,11 +7,9 @@ use App\Repository\CategoryRepository;
 
 class CreateCategory
 {
-    private CategoryRepository $categoryRepository;
 
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(private CategoryRepository $categoryRepository)
     {
-        $this->categoryRepository = $categoryRepository;
     }
 
     public function __invoke(string $name): ?Category

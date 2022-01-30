@@ -15,7 +15,7 @@ final class BookAdmin extends AbstractAdmin
 {
     protected function createNewInstance(): object
     {
-        return Book::create('', null, '', null, null, [], []);
+        return Book::create('', null, '', null, null, [], [], '', '');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
@@ -27,8 +27,7 @@ final class BookAdmin extends AbstractAdmin
             ->add('description')
             ->add('createdAt')
             ->add('readAt')
-            ->add('score.value')
-            ;
+            ->add('score.value');
     }
 
     protected function configureListFields(ListMapper $listMapper): void
@@ -61,8 +60,7 @@ final class BookAdmin extends AbstractAdmin
             ->add('description')
             ->add('createdAt')
             ->add('readAt')
-            ->add('score.value')
-            ;
+            ->add('score.value');
     }
 
     protected function configureShowFields(ShowMapper $showMapper): void
@@ -76,7 +74,6 @@ final class BookAdmin extends AbstractAdmin
             ->add('description')
             ->add('createdAt')
             ->add('readAt')
-            ->add('score.value')
-            ;
+            ->add('score.value');
     }
 }

@@ -2,7 +2,7 @@ parameters:
     level: 3
     paths: 
         - src
-    excludes_analyse:
+    excludePaths:
         - %rootDir%/src/Migrations
     symfony:
         container_xml_path: 'var/cache/dev/App_KernelDevDebugContainer.xml'

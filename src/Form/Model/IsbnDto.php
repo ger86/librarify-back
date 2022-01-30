@@ -16,14 +16,4 @@ class IsbnDto
         $dto->isbnLong = $isbn->getIsbnLong();
         return $dto;
     }
-
-    public function getIsbn(): ?string
-    {
-        return $this->isbn;
-    }
-
-    public function getIsbnLong(): ?string
-    {
-        return $this->isbnLong;
-    }
 }

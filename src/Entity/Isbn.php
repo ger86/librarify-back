@@ -6,20 +6,12 @@ use Ramsey\Uuid\UuidInterface;
 
 class Isbn
 {
-    private UuidInterface $id;
-
-    private string $isbn;
-
-    private string $isbnLong;
-
-    private Book $book;
-
-    public function __construct(UuidInterface $id, string $isbn, string $isbnLong, Book $book)
-    {
-        $this->id = $id;
-        $this->isbn = $isbn;
-        $this->isbnLong = $isbnLong;
-        $this->book = $book;
+    public function __construct(
+        private UuidInterface $id,
+        private string $isbn,
+        private string $isbnLong,
+        private Book $book
+    ) {
     }
 
     public function getIsbn(): string

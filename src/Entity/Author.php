@@ -9,17 +9,11 @@ use Ramsey\Uuid\UuidInterface;
 
 class Author
 {
-    private UuidInterface $id;
-
-    private string $name;
-
     /** @var Collection<int,Book> $books */
     private Collection $books;
 
-    public function __construct(UuidInterface $uuid, string $name)
+    public function __construct(private UuidInterface $id, private string $name)
     {
-        $this->id = $uuid;
-        $this->name = $name;
         $this->books = new ArrayCollection();
     }
 

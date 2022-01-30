@@ -9,15 +9,8 @@ class BookCreatedEvent extends Event
 {
     public const NAME = 'book.created';
 
-    private UuidInterface $bookId;
 
-    public function __construct(UuidInterface $bookId)
+    public function __construct(public readonly UuidInterface $bookId)
     {
-        $this->bookId = $bookId;
-    }
-
-    public function getBookId(): UuidInterface
-    {
-        return $this->bookId;
     }
 }

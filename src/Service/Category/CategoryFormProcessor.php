@@ -11,19 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CategoryFormProcessor
 {
-
-    private GetCategory $getCategory;
-    private CategoryRepository $categoryRepository;
-    private FormFactoryInterface $formFactory;
-
     public function __construct(
-        GetCategory $getCategory,
-        CategoryRepository $categoryRepository,
-        FormFactoryInterface $formFactory
+        private GetCategory $getCategory,
+        private CategoryRepository $categoryRepository,
+        private FormFactoryInterface $formFactory
     ) {
-        $this->getCategory = $getCategory;
-        $this->categoryRepository = $categoryRepository;
-        $this->formFactory = $formFactory;
     }
 
     public function __invoke(Request $request, ?string $categoryId = null): array
@@ -37,7 +29,7 @@ class CategoryFormProcessor
             $category = ($this->getCategory)($categoryId);
             $categoryDto = CategoryDto::createFromCategory($category);
         }
-        
+
         $form = $this->formFactory->create(CategoryFormType::class, $categoryDto);
         $form->handleRequest($request);
         if (!$form->isSubmitted()) {
@@ -49,11 +41,11 @@ class CategoryFormProcessor
 
         if ($category === null) {
             $category = Category::create(
-                $categoryDto->getName()
+                $categoryDto->name
             );
         } else {
             $category->update(
-                $categoryDto->getName()
+                $categoryDto->name
             );
         }
 

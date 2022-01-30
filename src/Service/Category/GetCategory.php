@@ -10,11 +10,8 @@ use Ramsey\Uuid\Uuid;
 class GetCategory
 {
 
-    private CategoryRepository $categoryRepository;
-
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(private CategoryRepository $categoryRepository)
     {
-        $this->categoryRepository = $categoryRepository;
     }
 
     public function __invoke(string $id): ?Category

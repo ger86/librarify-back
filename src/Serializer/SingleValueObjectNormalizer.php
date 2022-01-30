@@ -8,12 +8,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class SingleValueObjectNormalizer implements ContextAwareNormalizerInterface
 {
-
-    private ObjectNormalizer $normalizer;
-
-    public function __construct(ObjectNormalizer $normalizer)
+    public function __construct(private ObjectNormalizer $normalizer)
     {
-        $this->normalizer = $normalizer;
     }
 
     public function normalize($valueObject, string $format = null, array $context = [])

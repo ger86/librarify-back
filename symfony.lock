@@ -530,8 +530,8 @@
     "symfony/options-resolver": {
         "version": "v5.0.10"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.8"
+    "symfony/password-hasher": {
+        "version": "v5.4.2"
     },
     "symfony/phpunit-bridge": {
         "version": "4.3",
@@ -568,6 +568,9 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.22.0"
+    },
+    "symfony/polyfill-php81": {
+        "version": "v1.24.0"
     },
     "symfony/process": {
         "version": "v5.1.10"
@@ -625,9 +628,6 @@
     "symfony/serializer": {
         "version": "v5.0.10"
     },
-    "symfony/serializer-pack": {
-        "version": "v1.0.3"
-    },
     "symfony/service-contracts": {
         "version": "v2.0.1"
     },
@@ -669,9 +669,6 @@
             "config/packages/twig.yaml",
             "templates/base.html.twig"
         ]
-    },
-    "symfony/twig-pack": {
-        "version": "v1.0.0"
     },
     "symfony/validator": {
         "version": "4.3",

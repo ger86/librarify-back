@@ -7,7 +7,8 @@ use App\Service\Category\CategoryFormProcessor;
 use App\Service\Category\DeleteCategory;
 use App\Service\Category\GetCategory;
 use Exception;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\Annotations\{Delete, Get, Post, Put};
+use FOS\RestBundle\Controller\Annotations\View as ViewAttribute;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,19 +17,16 @@ use Throwable;
 
 class CategoryController extends AbstractFOSRestController
 {
-    /**
-     * @Rest\Get(path="/categories")
-     * @Rest\View(serializerGroups={"book"}, serializerEnableMaxDepthChecks=true)
-     */
+
+    #[Get(path: "/categories")]
+    #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
     public function getAction(CategoryRepository $categoryRepository)
     {
         return $categoryRepository->findAll();
     }
 
-    /**
-     * @Rest\Get(path="/categories/{id}")
-     * @Rest\View(serializerGroups={"book"}, serializerEnableMaxDepthChecks=true)
-     */
+    #[Get(path: "/categories/{id}")]
+    #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
     public function getSingleAction(string $id, GetCategory $getCategory)
     {
         try {
@@ -39,11 +37,8 @@ class CategoryController extends AbstractFOSRestController
         return $category;
     }
 
-
-    /**
-     * @Rest\Post(path="/categories")
-     * @Rest\View(serializerGroups={"book"}, serializerEnableMaxDepthChecks=true)
-     */
+    #[Post(path: "/categories")]
+    #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
     public function postAction(
         Request $request,
         CategoryFormProcessor $categoryFormProcessor
@@ -54,10 +49,8 @@ class CategoryController extends AbstractFOSRestController
         return View::create($data, $statusCode);
     }
 
-    /**
-     * @Rest\Post(path="/categories/{id}")
-     * @Rest\View(serializerGroups={"book"}, serializerEnableMaxDepthChecks=true)
-     */
+    #[Put(path: "/categories/{id}")]
+    #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
     public function editAction(
         string $id,
         CategoryFormProcessor $categoryFormProcessor,
@@ -73,10 +66,8 @@ class CategoryController extends AbstractFOSRestController
         }
     }
 
-    /**
-     * @Rest\Delete(path="/categories/{id}")
-     * @Rest\View(serializerGroups={"book"}, serializerEnableMaxDepthChecks=true)
-     */
+    #[Delete(path: "/categories/{id}")]
+    #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
     public function deleteAction(string $id, DeleteCategory $deleteCategory)
     {
         try {

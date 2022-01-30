@@ -7,18 +7,11 @@ use App\Service\Utils\WriteCsvInterface;
 
 class ExportInCsv
 {
-    private BookRepository $bookRepository;
-    private WriteCsvInterface $writeCsv;
-    private string $projectFolder;
-
     public function __construct(
-        BookRepository $bookRepository,
-        WriteCsvInterface $writeCsv,
-        string $projectFolder
+        private BookRepository $bookRepository,
+        private WriteCsvInterface $writeCsv,
+        private string $projectFolder
     ) {
-        $this->bookRepository = $bookRepository;
-        $this->writeCsv = $writeCsv;
-        $this->projectFolder = $projectFolder;
     }
 
     public function __invoke(): void
@@ -35,6 +28,6 @@ class ExportInCsv
                 $book->getTitle()
             ];
         }
-        $this->writeCsv->write($contents, $this->projectFolder .'/var/books.csv', $headers);
+        $this->writeCsv->write($contents, $this->projectFolder . '/var/books.csv', $headers);
     }
 }

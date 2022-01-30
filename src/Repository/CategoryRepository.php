@@ -33,7 +33,7 @@ class CategoryRepository extends ServiceEntityRepository
         return $category;
     }
 
-    public function delete(Category $category)
+    public function delete(Category $category): void
     {
         $this->getEntityManager()->remove($category);
         $this->getEntityManager()->flush();

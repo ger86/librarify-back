@@ -9,16 +9,14 @@ use Ramsey\Uuid\Nonstandard\Uuid;
 
 class GetBook
 {
-    private BookRepository $bookRepository;
 
-    public function __construct(BookRepository $bookRepository)
+    public function __construct(private BookRepository $bookRepository)
     {
-        $this->bookRepository = $bookRepository;
     }
 
     public function __invoke(string $id): Book
     {
-        $book = $this->bookRepository->find(Uuid::fromString($id)); 
+        $book = $this->bookRepository->find(Uuid::fromString($id));
         if (!$book) {
             BookNotFound::throwException();
         }

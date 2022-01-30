@@ -19,37 +19,17 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class BookFormProcessor
 {
-
-    private GetBook $getBook;
-    private BookRepository $bookRepository;
-    private CreateCategory $createCategory;
-    private GetCategory $getCategory;
-    private CreateAuthor $createAuthor;
-    private GetAuthor $getAuthor;
-    private FileUploader $fileUploader;
-    private FormFactoryInterface $formFactory;
-    private EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        GetBook $getBook,
-        BookRepository $bookRepository,
-        GetCategory $getCategory,
-        CreateCategory $createCategory,
-        CreateAuthor $createAuthor,
-        GetAuthor $getAuthor,
-        FileUploader $fileUploader,
-        FormFactoryInterface $formFactory,
-        EventDispatcherInterface $eventDispatcher
+        private GetBook $getBook,
+        private BookRepository $bookRepository,
+        private GetCategory $getCategory,
+        private CreateCategory $createCategory,
+        private CreateAuthor $createAuthor,
+        private GetAuthor $getAuthor,
+        private FileUploader $fileUploader,
+        private FormFactoryInterface $formFactory,
+        private EventDispatcherInterface $eventDispatcher
     ) {
-        $this->getBook = $getBook;
-        $this->bookRepository = $bookRepository;
-        $this->createCategory = $createCategory;
-        $this->getCategory = $getCategory;
-        $this->createAuthor = $createAuthor;
-        $this->getAuthor = $getAuthor;
-        $this->fileUploader = $fileUploader;
-        $this->formFactory = $formFactory;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Request $request, ?string $bookId = null): array
@@ -78,57 +58,57 @@ class BookFormProcessor
         }
 
         $categories = [];
-        foreach ($bookDto->getCategories() as $newCategoryDto) {
+        foreach ($bookDto->categories as $newCategoryDto) {
             $category = null;
-            if ($newCategoryDto->getId() !== null) {
-                $category = ($this->getCategory)($newCategoryDto->getId());
+            if ($newCategoryDto->id !== null) {
+                $category = ($this->getCategory)($newCategoryDto->id);
             }
             if ($category === null) {
-                $category = ($this->createCategory)($newCategoryDto->getName());
+                $category = ($this->createCategory)($newCategoryDto->name);
             }
             $categories[] = $category;
         }
 
         $authors = [];
-        foreach ($bookDto->getAuthors() as $newAuthorDto) {
+        foreach ($bookDto->authors as $newAuthorDto) {
             $author = null;
-            if ($newAuthorDto->getId() !== null) {
-                $author = ($this->getAuthor)($newAuthorDto->getId());
+            if ($newAuthorDto->id !== null) {
+                $author = ($this->getAuthor)($newAuthorDto->id);
             }
             if ($author === null) {
-                $author = ($this->createAuthor)($newAuthorDto->getName());
+                $author = ($this->createAuthor)($newAuthorDto->name);
             }
             $authors[] = $author;
         }
 
         $filename = null;
-        if ($bookDto->getBase64Image()) {
+        if ($bookDto->base64Image) {
             $filename = $this->fileUploader->uploadBase64File($bookDto->base64Image);
         }
 
         if ($book === null) {
             $book = Book::create(
-                $bookDto->getTitle(),
+                $bookDto->title,
                 $filename,
-                $bookDto->getDescription(),
-                Score::create($bookDto->getScore()),
-                $bookDto->getReadAt(),
+                $bookDto->description,
+                Score::create($bookDto->score),
+                $bookDto->readAt,
                 $authors,
                 $categories,
-                $bookDto->isbn->getIsbn(),
-                $bookDto->isbn->getIsbnLong()
+                $bookDto->isbn->isbn,
+                $bookDto->isbn->isbnLong
             );
         } else {
             $book->update(
-                $bookDto->getTitle(),
+                $bookDto->title,
                 $filename === null ? $book->getImage() : $filename,
-                $bookDto->getDescription(),
-                Score::create($bookDto->getScore()),
-                $bookDto->getReadAt(),
+                $bookDto->description,
+                Score::create($bookDto->score),
+                $bookDto->readAt,
                 $authors,
                 $categories,
-                $bookDto->isbn->getIsbn(),
-                $bookDto->isbn->getIsbnLong()
+                $bookDto->isbn->isbn,
+                $bookDto->isbn->isbnLong
             );
         }
         $this->bookRepository->save($book);

@@ -28,7 +28,7 @@ App\Entity\Book:
             precision: 0
         createdAt:
             type: datetime
-            nullable: true
+            nullable: false
         readAt:
             type: date
             nullable: true

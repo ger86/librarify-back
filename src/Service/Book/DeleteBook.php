@@ -6,16 +6,13 @@ use App\Repository\BookRepository;
 
 class DeleteBook
 {
-    private GetBook $getBook;
-    private BookRepository $bookRepository;
-
-    public function __construct(GetBook $getBook, BookRepository $bookRepository)
-    {
-        $this->getBook = $getBook;
-        $this->bookRepository = $bookRepository;
+    public function __construct(
+        private GetBook $getBook,
+        private BookRepository $bookRepository
+    ) {
     }
 
-    public function __invoke(string $id)
+    public function __invoke(string $id): void
     {
         $book = ($this->getBook)($id);
         $this->bookRepository->delete($book);

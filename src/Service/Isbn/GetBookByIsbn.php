@@ -6,11 +6,9 @@ use App\Model\Dto\Isbn\GetBookByIsbnResponse;
 use App\Service\Utils\HttpClientInterface;
 use Exception;
 
-class GetBookByIsbn 
+class GetBookByIsbn
 {
-    private HttpClientInterface $httpClient;
-
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(private HttpClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
     }

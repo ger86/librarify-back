@@ -8,13 +8,9 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ScoreNormalizer implements ContextAwareNormalizerInterface
 {
-
-    private ObjectNormalizer $normalizer;
-
     public function __construct(
-        ObjectNormalizer $normalizer
+        private ObjectNormalizer $normalizer
     ) {
-        $this->normalizer = $normalizer;
     }
 
     public function normalize($score, $format = null, array $context = [])

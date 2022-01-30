@@ -33,7 +33,7 @@ class BookRepository extends ServiceEntityRepository
         return $book;
     }
 
-    public function delete(Book $book)
+    public function delete(Book $book): void
     {
         $this->getEntityManager()->remove($book);
         $this->getEntityManager()->flush();

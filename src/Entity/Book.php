@@ -15,76 +15,35 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class Book
 {
-    private UuidInterface $id;
-
-    private string $title;
-
-    private ?string $image;
-
-    /** @var Collection|Category[] */
-    private Collection $categories;
-
-    /** @var Collection|Author[] */
-    private Collection $authors;
-
-    private Score $score;
-
-    private ?string $description;
-
-    private ?DateTimeInterface $createdAt;
-
-    private ?DateTimeInterface $readAt;
-
     private array $domainEvents = [];
-
     private ?Isbn $isbn;
+    private DateTimeInterface $createdAt;
 
     /**
-     * @param UuidInterface $uuid
-     * @param string $title
-     * @param string|null $image
-     * @param string|null $description
-     * @param Score|null $score
-     * @param DateTimeInterface|null $readAt
      * @param Collection|Author[]|null $authors
      * @param Collection|Category[] |null $categories
-     * @param string $isbn
-     * @param string $isbnLong
      */
     public function __construct(
-        UuidInterface $uuid,
-        string $title,
-        ?string $image,
-        ?string $description,
-        ?Score $score,
-        ?DateTimeInterface $readAt,
-        ?Collection $authors,
-        ?Collection $categories,
-        string $isbn,
-        string $isbnLong
+        private UuidInterface $id,
+        private string $title,
+        private ?string $image = null,
+        private ?string $description = null,
+        private ?Score $score = new Score(),
+        private ?DateTimeInterface $readAt = null,
+        private ?Collection $authors = new ArrayCollection(),
+        private ?Collection $categories = new ArrayCollection(),
+        string $isbn = null,
+        string $isbnLong = null,
     ) {
-        $this->id = $uuid;
-        $this->title = $title;
-        $this->image = $image;
-        $this->description = $description ?? $description;;
-        $this->score = $score ?? Score::create();
-        $this->readAt = $readAt;
-        $this->categories = $categories ?? new ArrayCollection();
-        $this->authors = $authors ?? new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
-        $this->isbn = new Isbn(Uuid::uuid4(), $isbn, $isbnLong, $this);
+        if ($isbn !== null && $isbnLong !== null) {
+            $this->isbn = new Isbn(Uuid::uuid4(), $isbn, $isbnLong, $this);
+        }
     }
 
     /**
-     * @param string $title
-     * @param string|null $image
-     * @param string|null $description
-     * @param Score|null $score
-     * @param DateTimeInterface|null $readAt
      * @param array|Author[] $authors
      * @param array|Category[] $categories
-     * @param string $isbn
-     * @param string $isbnLong
      * @return self
      */
     public static function create(

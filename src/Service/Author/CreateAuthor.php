@@ -7,11 +7,9 @@ use App\Repository\AuthorRepository;
 
 class CreateAuthor
 {
-    private AuthorRepository $authorRepository;
 
-    public function __construct(AuthorRepository $authorRepository)
+    public function __construct(private AuthorRepository $authorRepository)
     {
-        $this->authorRepository = $authorRepository;
     }
 
     public function __invoke(string $name): ?Author
