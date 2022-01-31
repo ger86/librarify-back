@@ -18,7 +18,5 @@ App\Entity\Book:
             groups: ['book']
         createdAt:
             groups: ['book']
-        isbn:
-            groups: ['book']
 
 

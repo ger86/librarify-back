@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use App\Doctrine\IdToUuidMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Habbim\IdToUuid\IdToUuidMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!

@@ -16,7 +16,6 @@ use Symfony\Contracts\EventDispatcher\Event;
 class Book
 {
     private array $domainEvents = [];
-    private ?Isbn $isbn;
     private DateTimeInterface $createdAt;
 
     /**
@@ -32,13 +31,8 @@ class Book
         private ?DateTimeInterface $readAt = null,
         private ?Collection $authors = new ArrayCollection(),
         private ?Collection $categories = new ArrayCollection(),
-        string $isbn = null,
-        string $isbnLong = null,
     ) {
         $this->createdAt = new DateTimeImmutable();
-        if ($isbn !== null && $isbnLong !== null) {
-            $this->isbn = new Isbn(Uuid::uuid4(), $isbn, $isbnLong, $this);
-        }
     }
 
     /**
@@ -53,9 +47,7 @@ class Book
         ?Score $score,
         ?DateTimeInterface $readAt,
         array $authors,
-        array $categories,
-        string $isbn,
-        string $isbnLong
+        array $categories
     ): self {
         $book = new self(
             Uuid::uuid4(),
@@ -65,9 +57,7 @@ class Book
             $score,
             $readAt,
             new ArrayCollection($authors),
-            new ArrayCollection($categories),
-            $isbn,
-            $isbnLong
+            new ArrayCollection($categories)
         );
         $book->addDomainEvent(new BookCreatedEvent($book->getId()));
         return $book;
@@ -227,9 +217,7 @@ class Book
         ?Score $score,
         ?DateTimeInterface $readAt,
         array $authors,
-        array $categories,
-        string $isbn,
-        string $isbnLong
+        array $categories
     ) {
         $this->title = $title;
         if ($image !== null) {
@@ -238,11 +226,6 @@ class Book
         $this->description = $description;
         $this->score = $score;
         $this->readAt = $readAt;
-        if ($this->isbn === null) {
-            $this->isbn = new Isbn(Uuid::uuid4(), $isbn, $isbnLong, $this);
-        } else {
-            $this->isbn->update($isbn, $isbnLong);
-        }
         $this->updateCategories(...$categories);
         $this->updateAuthors(...$authors);
     }
@@ -302,10 +285,5 @@ class Book
     public function __toString()
     {
         return $this->title ?? 'Libro';
-    }
-
-    public function getIsbn(): ?Isbn
-    {
-        return $this->isbn;
     }
 }

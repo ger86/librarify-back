@@ -1,6 +1,0 @@
-App\Entity\Isbn:
-    attributes:
-        isbn:
-            groups: ['book']
-        isbnLong:
-            groups: ['book']

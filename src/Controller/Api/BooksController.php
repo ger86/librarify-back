@@ -2,6 +2,8 @@
 
 namespace App\Controller\Api;
 
+use App\Model\Book\BookCriteria;
+use App\Model\Book\BookRepositoryCriteria;
 use App\Repository\BookRepository;
 use App\Service\Book\DeleteBook;
 use App\Service\Book\GetBook;
@@ -20,9 +22,20 @@ class BooksController extends AbstractFOSRestController
     #[Get(path: "/books")]
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
     public function getAction(
-        BookRepository $bookRepository
+        BookRepository $bookRepository,
+        Request $request
     ) {
-        return $bookRepository->findAll();
+        $authorId = $request->query->get('authorId');
+        $categoryId = $request->query->get('categoryId');
+        $page = $request->query->get('page');
+        $itemsPerPage = $request->query->get('itemsPerPage');
+        $criteria = new BookRepositoryCriteria(
+            $authorId,
+            $categoryId,
+            $itemsPerPage !== null ? intval($itemsPerPage) : 10,
+            $page !== null ? intval($page) : 1,
+        );
+        return $bookRepository->findByCriteria($criteria);
     }
 
     #[Get(path: "/books/{id}")]
@@ -82,13 +95,13 @@ class BooksController extends AbstractFOSRestController
     }
 
 
-    #[Delete(path: "/books")]
+    #[Delete(path: "/books/{id}")]
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
     public function deleteAction(string $id, DeleteBook $deleteBook)
     {
         try {
             ($deleteBook)($id);
-        } catch (Throwable $t) {
+        } catch (Throwable) {
             return View::create('Book not found', Response::HTTP_BAD_REQUEST);
         }
         return View::create(null, Response::HTTP_NO_CONTENT);

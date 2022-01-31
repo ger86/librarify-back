@@ -35,14 +35,6 @@ App\Entity\Book:
     embedded: 
         score:
             class: App\Entity\Book\Score
-    oneToOne:
-        isbn:
-            targetEntity: App\Entity\Isbn
-            cascade: 
-                - 'persist'
-            fetch: LAZY
-            mappedBy: book
-            inversedBy: null
     manyToMany:
         categories:
             targetEntity: App\Entity\Category

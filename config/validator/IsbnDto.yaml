@@ -1,6 +1,0 @@
-App\Form\Model\IsbnDto:
-    properties:
-        isbn:
-            - NotBlank: ~
-        isbnLong:
-            - NotBlank: ~
