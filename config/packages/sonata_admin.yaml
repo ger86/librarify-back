@@ -1,8 +1,21 @@
 sonata_admin:
-    title: 'Sonata Admin'
+    title: 'Librarify Admin'
     dashboard:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
+        groups:
+            admin:
+                label: Administrador
+                icon: <i class='fa fa-pencil'></i>
+            cache:
+                label: Herramientas
+                icon: <i class='fa fa-gears'></i>
+                items:
+                    - route: admin_cache_clear
+                      label: Limpiar caché
+    global_search:
+        empty_boxes: fade
+        admin_route: edit
 
 sonata_block:
     blocks:

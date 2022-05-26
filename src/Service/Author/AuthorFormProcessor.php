@@ -31,7 +31,8 @@ class AuthorFormProcessor
         }
 
         $form = $this->formFactory->create(AuthorFormType::class, $authorDto);
-        $form->handleRequest($request);
+        $content = json_decode($request->getContent(), true);
+        $form->submit($content);
         if (!$form->isSubmitted()) {
             return [null, 'Form is not submitted'];
         }

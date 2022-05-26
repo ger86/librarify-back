@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 final class CategoryAdmin extends AbstractAdmin
 {
@@ -18,11 +19,27 @@ final class CategoryAdmin extends AbstractAdmin
         return Category::create('');
     }
 
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection
+            ->add('clone', $this->getRouterIdParameter() . '/clone')
+            ->add('import');
+    }
+
+    protected function configureActionButtons(
+        array $buttonList,
+        string $action,
+        ?object $object = null
+    ): array {
+        $buttonList['import'] = ['template' => 'admin/category/list__action_import.html.twig'];
+
+        return $buttonList;
+    }
+
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
-            ->add('name')
-            ;
+            ->add('name');
     }
 
     protected function configureListFields(ListMapper $listMapper): void
@@ -30,11 +47,14 @@ final class CategoryAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('name')
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
+                    'clone' => [
+                        'template' => 'admin/category/list__action_clone.html.twig',
+                    ],
                 ],
             ]);
     }
@@ -43,15 +63,13 @@ final class CategoryAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('id', null, ['disabled' => true])
-            ->add('name')
-            ;
+            ->add('name');
     }
 
     protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->add('id')
-            ->add('name', null, ['label' => 'Nombre'])
-            ;
+            ->add('name', null, ['label' => 'Nombre']);
     }
 }

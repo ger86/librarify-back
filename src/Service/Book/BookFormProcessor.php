@@ -4,6 +4,7 @@ namespace App\Service\Book;
 
 use App\Entity\Book;
 use App\Entity\Book\Score;
+use App\Entity\User;
 use App\Form\Model\BookDto;
 use App\Form\Model\CategoryDto;
 use App\Form\Type\BookFormType;
@@ -13,8 +14,10 @@ use App\Service\Author\GetAuthor;
 use App\Service\Category\CreateCategory;
 use App\Service\Category\GetCategory;
 use App\Service\FileUploader;
+use LogicException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class BookFormProcessor
@@ -28,12 +31,14 @@ class BookFormProcessor
         private GetAuthor $getAuthor,
         private FileUploader $fileUploader,
         private FormFactoryInterface $formFactory,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
+        private Security $security
     ) {
     }
 
     public function __invoke(Request $request, ?string $bookId = null): array
     {
+        $user = $this->getUser();
         $book = null;
         $bookDto = null;
 
@@ -68,6 +73,7 @@ class BookFormProcessor
             }
             $categories[] = $category;
         }
+        dump($categories);
 
         $authors = [];
         foreach ($bookDto->authors as $newAuthorDto) {
@@ -89,6 +95,7 @@ class BookFormProcessor
         if ($book === null) {
             $book = Book::create(
                 $bookDto->title,
+                $user,
                 $filename,
                 $bookDto->description,
                 Score::create($bookDto->score),
@@ -112,5 +119,14 @@ class BookFormProcessor
             $this->eventDispatcher->dispatch($event);
         }
         return [$book, null];
+    }
+
+    private function getUser(): User
+    {
+        $user = $this->security->getUser();
+        if (!$user instanceof User) {
+            throw new LogicException('User should be logged in');
+        }
+        return $user;
     }
 }

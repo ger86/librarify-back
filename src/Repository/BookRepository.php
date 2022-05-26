@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Book;
-use App\Model\Book\BookCriteria;
 use App\Model\Book\BookRepositoryCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -65,7 +64,7 @@ class BookRepository extends ServiceEntityRepository
 
         $paginator = new Paginator($queryBuilder->getQuery());
         return [
-            'total' => count($paginator),
+            'total' => \count($paginator),
             'itemsPerPage' => $criteria->itemsPerPage,
             'page' => $criteria->page,
             'data' => iterator_to_array($paginator->getIterator())

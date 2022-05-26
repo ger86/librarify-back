@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api;
 
-use App\Model\Book\BookCriteria;
 use App\Model\Book\BookRepositoryCriteria;
 use App\Repository\BookRepository;
 use App\Service\Book\DeleteBook;
@@ -32,8 +31,8 @@ class BooksController extends AbstractFOSRestController
         $criteria = new BookRepositoryCriteria(
             $authorId,
             $categoryId,
-            $itemsPerPage !== null ? intval($itemsPerPage) : 10,
-            $page !== null ? intval($page) : 1,
+            $itemsPerPage !== null ? \intval($itemsPerPage) : 10,
+            $page !== null ? \intval($page) : 1,
         );
         return $bookRepository->findByCriteria($criteria);
     }
@@ -44,7 +43,7 @@ class BooksController extends AbstractFOSRestController
     {
         try {
             $book = ($getBook)($id);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return View::create('Book not found', Response::HTTP_BAD_REQUEST);
         }
         return $book;
@@ -62,7 +61,6 @@ class BooksController extends AbstractFOSRestController
         return View::create($data, $statusCode);
     }
 
-
     #[Put(path: "/books/{id}")]
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
     public function editAction(
@@ -75,11 +73,10 @@ class BooksController extends AbstractFOSRestController
             $statusCode = $book ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST;
             $data = $book ?? $error;
             return View::create($data, $statusCode);
-        } catch (Throwable $t) {
+        } catch (Throwable $e) {
             return View::create('Book not found', Response::HTTP_BAD_REQUEST);
         }
     }
-
 
     #[Patch(path: "/books/{id}")]
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
@@ -93,7 +90,6 @@ class BooksController extends AbstractFOSRestController
         $book->patch($data);
         return View::create($book, Response::HTTP_OK);
     }
-
 
     #[Delete(path: "/books/{id}")]
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]

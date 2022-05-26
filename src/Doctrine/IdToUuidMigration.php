@@ -3,14 +3,12 @@
 namespace App\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\Migrations\AbstractMigration;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

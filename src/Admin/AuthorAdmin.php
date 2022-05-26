@@ -23,8 +23,7 @@ final class AuthorAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('name')
-            ;
+            ->add('name');
     }
 
     protected function configureListFields(ListMapper $listMapper): void
@@ -32,7 +31,7 @@ final class AuthorAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('name')
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
                     'edit' => [],
@@ -45,15 +44,13 @@ final class AuthorAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('id', null, ['disabled' => true])
-            ->add('name')
-            ;
+            ->add('name');
     }
 
     protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->add('id')
-            ->add('name')
-            ;
+            ->add('name');
     }
 }

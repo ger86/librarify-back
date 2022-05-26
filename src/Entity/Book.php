@@ -25,9 +25,10 @@ class Book
     public function __construct(
         private UuidInterface $id,
         private string $title,
+        private User $user,
         private ?string $image = null,
         private ?string $description = null,
-        private ?Score $score = new Score(),
+        private Score $score = new Score(),
         private ?DateTimeInterface $readAt = null,
         private ?Collection $authors = new ArrayCollection(),
         private ?Collection $categories = new ArrayCollection(),
@@ -42,6 +43,7 @@ class Book
      */
     public static function create(
         string $title,
+        User $user,
         ?string $image,
         ?string $description,
         ?Score $score,
@@ -52,9 +54,10 @@ class Book
         $book = new self(
             Uuid::uuid4(),
             $title,
+            $user,
             $image,
             $description,
-            $score,
+            $score ?? new Score(),
             $readAt,
             new ArrayCollection($authors),
             new ArrayCollection($categories)
@@ -103,11 +106,11 @@ class Book
     }
 
     /**
-     * @return Collection|Category[]
+     * @return Category[]
      */
-    public function getCategories(): Collection
+    public function getCategories(): array
     {
-        return $this->categories;
+        return array_values($this->categories->toArray());
     }
 
     public function addCategory(Category $category): self
@@ -128,9 +131,9 @@ class Book
         return $this;
     }
 
-    public function updateCategories(Category ...$categories)
+    public function updateCategories(Category ...$newCategories)
     {
-        /** @var Category[]|ArrayCollection */
+        /** @var ArrayCollection<Category> */
         $originalCategories = new ArrayCollection();
         foreach ($this->categories as $category) {
             $originalCategories->add($category);
@@ -138,13 +141,13 @@ class Book
 
         // Remove categories
         foreach ($originalCategories as $originalCategory) {
-            if (!\in_array($originalCategory, $categories)) {
+            if (!\in_array($originalCategory, $newCategories, true)) {
                 $this->removeCategory($originalCategory);
             }
         }
 
         // Add categories
-        foreach ($categories as $newCategory) {
+        foreach ($newCategories as $newCategory) {
             if (!$originalCategories->contains($newCategory)) {
                 $this->addCategory($newCategory);
             }
@@ -201,11 +204,6 @@ class Book
     }
 
     /**
-     * @param string $title
-     * @param string|null $image
-     * @param string|null $description
-     * @param Score|null $score
-     * @param DateTimeInterface $readAt
      * @param array|Author[] $authors
      * @param array|Category[] $categories
      * @return void
@@ -280,6 +278,11 @@ class Book
     public function getReadAt(): ?DateTimeInterface
     {
         return $this->readAt;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
     }
 
     public function __toString()

@@ -31,7 +31,8 @@ class CategoryFormProcessor
         }
 
         $form = $this->formFactory->create(CategoryFormType::class, $categoryDto);
-        $form->handleRequest($request);
+        $content = json_decode($request->getContent(), true);
+        $form->submit($content);
         if (!$form->isSubmitted()) {
             return [null, 'Form is not submitted'];
         }
