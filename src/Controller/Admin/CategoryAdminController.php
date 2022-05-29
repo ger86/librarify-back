@@ -17,7 +17,7 @@ class CategoryAdminController extends CRUDController
             throw new NotFoundHttpException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        $clonedCategory = Category::create($object->getName());
+        $clonedCategory = Category::create($object->getName(), $object->getUser());
         $this->admin->create($clonedCategory);
 
         $this->addFlash('sonata_flash_success', 'Cloned successfully');

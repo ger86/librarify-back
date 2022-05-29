@@ -44,6 +44,8 @@ class BookRepository extends ServiceEntityRepository
     public function findByCriteria(BookRepositoryCriteria $criteria): array
     {
         $queryBuilder = $this->createQueryBuilder('b')
+            ->andWhere('b.user = :userId')
+            ->setParameter('userId', $criteria->userId)
             ->orderBy('b.title', 'DESC');
 
         if ($criteria->authorId !== null) {

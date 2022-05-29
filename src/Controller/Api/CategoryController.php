@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use App\Service\Category\CategoryFormProcessor;
 use App\Service\Category\DeleteCategory;
 use App\Service\Category\GetCategory;
+use App\Service\Utils\Security;
 use Exception;
 use FOS\RestBundle\Controller\Annotations\{Delete, Get, Post, Put};
 use FOS\RestBundle\Controller\Annotations\View as ViewAttribute;
@@ -20,9 +21,9 @@ class CategoryController extends AbstractFOSRestController
 
     #[Get(path: "/categories")]
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
-    public function getAction(CategoryRepository $categoryRepository)
+    public function getAction(CategoryRepository $categoryRepository, Security $security)
     {
-        return $categoryRepository->findAll();
+        return $categoryRepository->findBy(['user' => $security->getCurrentUser()]);
     }
 
     #[Get(path: "/categories/{id}")]
@@ -31,7 +32,7 @@ class CategoryController extends AbstractFOSRestController
     {
         try {
             $category = ($getCategory)($id);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return View::create('Category not found', Response::HTTP_BAD_REQUEST);
         }
         return $category;
@@ -54,14 +55,16 @@ class CategoryController extends AbstractFOSRestController
     public function editAction(
         string $id,
         CategoryFormProcessor $categoryFormProcessor,
-        Request $request
+        Request $request,
+        GetCategory $getCategory
     ) {
+        ($getCategory)($id);
         try {
             [$category, $error] = ($categoryFormProcessor)($request, $id);
             $statusCode = $category ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST;
             $data = $category ?? $error;
             return View::create($data, $statusCode);
-        } catch (Throwable $t) {
+        } catch (Throwable) {
             return View::create('Category not found', Response::HTTP_BAD_REQUEST);
         }
     }
@@ -72,7 +75,7 @@ class CategoryController extends AbstractFOSRestController
     {
         try {
             ($deleteCategory)($id);
-        } catch (Throwable $t) {
+        } catch (Throwable) {
             return View::create('Category not found', Response::HTTP_BAD_REQUEST);
         }
         return View::create(null, Response::HTTP_NO_CONTENT);

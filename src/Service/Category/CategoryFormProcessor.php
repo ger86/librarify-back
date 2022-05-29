@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Form\Model\CategoryDto;
 use App\Form\Type\CategoryFormType;
 use App\Repository\CategoryRepository;
+use App\Service\Utils\Security;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,7 +15,8 @@ class CategoryFormProcessor
     public function __construct(
         private GetCategory $getCategory,
         private CategoryRepository $categoryRepository,
-        private FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
+        private Security $security
     ) {
     }
 
@@ -41,8 +43,10 @@ class CategoryFormProcessor
         }
 
         if ($category === null) {
+            $user = $this->security->getCurrentUser();
             $category = Category::create(
-                $categoryDto->name
+                $categoryDto->name,
+                $user
             );
         } else {
             $category->update(

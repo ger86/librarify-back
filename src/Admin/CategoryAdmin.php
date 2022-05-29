@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\Category;
+use App\Repository\UserRepository;
+use LogicException;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -14,9 +16,23 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 final class CategoryAdmin extends AbstractAdmin
 {
+    private ?UserRepository $userRepository;
+
+    public function setUserRepository(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     protected function createNewInstance(): object
     {
-        return Category::create('');
+        if ($this->userRepository === null) {
+            throw new LogicException('Not user repository');
+        }
+        $user = $this->userRepository->findOneBy([]);
+        if ($user === null) {
+            throw new LogicException('Create at least one user');
+        }
+        return Category::create('', $user);
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void

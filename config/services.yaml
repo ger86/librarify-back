@@ -24,6 +24,8 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, model_class: App\Entity\Category, group: admin, label: "Categoría", controller: App\Controller\Admin\CategoryAdminController }
         public: true
+        calls:
+            - [setUserRepository, ['@App\Repository\UserRepository']]
 
     admin.book:
         class: App\Admin\BookAdmin
@@ -38,6 +40,8 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, model_class: App\Entity\Author, group: admin, label: "Autor" }
         public: true
+        calls:
+            - [setUserRepository, ['@App\Repository\UserRepository']]
 
     App\EventListener\JWTCreatedListener:
         arguments: ['@request_stack']

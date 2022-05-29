@@ -13,14 +13,17 @@ class Category
     /** @var Collection<int,Book> $books */
     private Collection $books;
 
-    public function __construct(private UuidInterface $id, private string $name)
-    {
+    public function __construct(
+        private UuidInterface $id,
+        private string $name,
+        private User $user
+    ) {
         $this->books = new ArrayCollection();
     }
 
-    public static function create(string $name): self
+    public static function create(string $name, User $user): self
     {
-        return new self(Uuid::uuid4(), $name);
+        return new self(Uuid::uuid4(), $name, $user);
     }
 
     public function getId(): UuidInterface
@@ -72,6 +75,17 @@ class Category
     {
         $this->name = $name;
         return $this;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
     }
 
     public function __toString()

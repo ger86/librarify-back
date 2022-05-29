@@ -22,4 +22,11 @@ App\Entity\Author:
             inversedBy: null
             joinTable: {  }
             orderBy: null
+    manyToOne:
+        user:
+            targetEntity: App\Entity\User
+            cascade: {  }
+            fetch: LAZY
+            joinColumn:
+                nullable: false
     lifecycleCallbacks: {  }

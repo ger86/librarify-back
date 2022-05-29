@@ -3,6 +3,7 @@
 namespace App\Service\Author;
 
 use App\Entity\Author;
+use App\Entity\User;
 use App\Repository\AuthorRepository;
 
 class CreateAuthor
@@ -12,9 +13,9 @@ class CreateAuthor
     {
     }
 
-    public function __invoke(string $name): ?Author
+    public function __invoke(string $name, User $user): Author
     {
-        $author = Author::create($name);
+        $author = Author::create($name, $user);
         $this->authorRepository->save($author);
         return $author;
     }

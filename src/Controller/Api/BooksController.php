@@ -7,6 +7,7 @@ use App\Repository\BookRepository;
 use App\Service\Book\DeleteBook;
 use App\Service\Book\GetBook;
 use App\Service\Book\BookFormProcessor;
+use App\Service\Utils\Security;
 use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\{Delete, Get, Post, Put, Patch};
@@ -22,7 +23,8 @@ class BooksController extends AbstractFOSRestController
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
     public function getAction(
         BookRepository $bookRepository,
-        Request $request
+        Request $request,
+        Security $security
     ) {
         $authorId = $request->query->get('authorId');
         $categoryId = $request->query->get('categoryId');
@@ -33,6 +35,7 @@ class BooksController extends AbstractFOSRestController
             $categoryId,
             $itemsPerPage !== null ? \intval($itemsPerPage) : 10,
             $page !== null ? \intval($page) : 1,
+            $security->getCurrentUser()->getId()
         );
         return $bookRepository->findByCriteria($criteria);
     }

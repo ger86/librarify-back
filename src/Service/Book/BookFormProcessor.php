@@ -4,7 +4,6 @@ namespace App\Service\Book;
 
 use App\Entity\Book;
 use App\Entity\Book\Score;
-use App\Entity\User;
 use App\Form\Model\BookDto;
 use App\Form\Model\CategoryDto;
 use App\Form\Type\BookFormType;
@@ -14,10 +13,9 @@ use App\Service\Author\GetAuthor;
 use App\Service\Category\CreateCategory;
 use App\Service\Category\GetCategory;
 use App\Service\FileUploader;
-use LogicException;
+use App\Service\Utils\Security;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class BookFormProcessor
@@ -38,7 +36,7 @@ class BookFormProcessor
 
     public function __invoke(Request $request, ?string $bookId = null): array
     {
-        $user = $this->getUser();
+        $user = $this->security->getCurrentUser();
         $book = null;
         $bookDto = null;
 
@@ -69,11 +67,10 @@ class BookFormProcessor
                 $category = ($this->getCategory)($newCategoryDto->id);
             }
             if ($category === null) {
-                $category = ($this->createCategory)($newCategoryDto->name);
+                $category = ($this->createCategory)($newCategoryDto->name, $user);
             }
             $categories[] = $category;
         }
-        dump($categories);
 
         $authors = [];
         foreach ($bookDto->authors as $newAuthorDto) {
@@ -82,7 +79,7 @@ class BookFormProcessor
                 $author = ($this->getAuthor)($newAuthorDto->id);
             }
             if ($author === null) {
-                $author = ($this->createAuthor)($newAuthorDto->name);
+                $author = ($this->createAuthor)($newAuthorDto->name, $user);
             }
             $authors[] = $author;
         }
@@ -119,14 +116,5 @@ class BookFormProcessor
             $this->eventDispatcher->dispatch($event);
         }
         return [$book, null];
-    }
-
-    private function getUser(): User
-    {
-        $user = $this->security->getUser();
-        if (!$user instanceof User) {
-            throw new LogicException('User should be logged in');
-        }
-        return $user;
     }
 }

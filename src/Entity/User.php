@@ -14,8 +14,6 @@ class User implements UserInterface
         private UuidInterface $id,
         private string $email
     ) {
-        $this->id = $id;
-        $this->email = $email;
     }
 
     public function getId(): UuidInterface

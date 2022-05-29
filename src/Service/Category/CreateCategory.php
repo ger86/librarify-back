@@ -3,6 +3,7 @@
 namespace App\Service\Category;
 
 use App\Entity\Category;
+use App\Entity\User;
 use App\Repository\CategoryRepository;
 
 class CreateCategory
@@ -12,9 +13,9 @@ class CreateCategory
     {
     }
 
-    public function __invoke(string $name): ?Category
+    public function __invoke(string $name, User $user): Category
     {
-        $category = Category::create($name);
+        $category = Category::create($name, $user);
         $this->categoryRepository->save($category);
         return $category;
     }

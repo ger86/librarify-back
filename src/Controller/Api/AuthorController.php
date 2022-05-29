@@ -6,6 +6,7 @@ use App\Repository\AuthorRepository;
 use App\Service\Author\AuthorFormProcessor;
 use App\Service\Author\DeleteAuthor;
 use App\Service\Author\GetAuthor;
+use App\Service\Utils\Security;
 use Exception;
 use FOS\RestBundle\Controller\Annotations\{Delete, Get, Post, Put};
 use FOS\RestBundle\Controller\Annotations\View as ViewAttribute;
@@ -20,18 +21,19 @@ class AuthorController extends AbstractFOSRestController
 
     #[Get(path: "/authors")]
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
-    public function getAction(AuthorRepository $authorRepository)
+    public function getAction(AuthorRepository $authorRepository, Security $security)
     {
-        return $authorRepository->findAll();
+        $user = $security->getCurrentUser();
+        return $authorRepository->findBy(['user' => $user]);
     }
 
     #[Get(path: "/authors/{id}")]
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
-    public function getSingleAction(string $id, GetAuthor $getAuthor)
+    public function getSingleAction(string $id, GetAuthor $getAuthor, Security $security)
     {
         try {
             $author = ($getAuthor)($id);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return View::create('Category not found', Response::HTTP_BAD_REQUEST);
         }
         return $author;
@@ -68,8 +70,12 @@ class AuthorController extends AbstractFOSRestController
 
     #[Delete(path: "/authors/{id}")]
     #[ViewAttribute(serializerGroups: ['book'], serializerEnableMaxDepthChecks: true)]
-    public function deleteAction(string $id, DeleteAuthor $deleteAuthor)
-    {
+    public function deleteAction(
+        string $id,
+        DeleteAuthor $deleteAuthor,
+        GetAuthor $getAuthor
+    ) {
+        ($getAuthor)($id);
         try {
             ($deleteAuthor)($id);
         } catch (Throwable) {

@@ -6,6 +6,7 @@ use App\Entity\Author;
 use App\Form\Model\AuthorDto;
 use App\Form\Type\AuthorFormType;
 use App\Repository\AuthorRepository;
+use App\Service\Utils\Security;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,7 +15,8 @@ class AuthorFormProcessor
     public function __construct(
         private GetAuthor $getAuthor,
         private AuthorRepository $authorRepository,
-        private FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
+        private Security $security
     ) {
     }
 
@@ -41,8 +43,10 @@ class AuthorFormProcessor
         }
 
         if ($author === null) {
+            $user = $this->security->getCurrentUser();
             $author = Author::create(
-                $authorDto->name
+                $authorDto->name,
+                $user
             );
         } else {
             $author->update(

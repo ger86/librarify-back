@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\Author;
+use App\Repository\UserRepository;
+use LogicException;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,10 +15,23 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 final class AuthorAdmin extends AbstractAdmin
 {
+    private ?UserRepository $userRepository;
+
+    public function setUserRepository(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     protected function createNewInstance(): object
     {
-        return Author::create('');
+        if ($this->userRepository === null) {
+            throw new LogicException('Not user repository');
+        }
+        $user = $this->userRepository->findOneBy([]);
+        if ($user === null) {
+            throw new LogicException('Create at least one user');
+        }
+        return Author::create('', $user);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
