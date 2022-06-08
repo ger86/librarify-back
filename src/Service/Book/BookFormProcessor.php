@@ -45,9 +45,6 @@ class BookFormProcessor
         } else {
             $book = ($this->getBook)($bookId);
             $bookDto = BookDto::createFromBook($book);
-            foreach ($book->getCategories() as $category) {
-                $bookDto->categories[] = CategoryDto::createFromCategory($category);
-            }
         }
 
         $content = json_decode($request->getContent(), true);
