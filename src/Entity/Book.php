@@ -285,7 +285,7 @@ class Book
         if ($this->readAt === null) {
             return null;
         }
-        return $this->readAt->format('yyyy-MM-dd');
+        return $this->readAt->format('Y-m-d');
     }
 
     public function setUser(User $user): self
