@@ -14,8 +14,9 @@ App\Entity\Book:
             groups: ['book']
         score:
             groups: ['book']
-        readAt:
+        readAtAsString:
             groups: ['book']
+            serialized_name: readAt
         createdAt:
             groups: ['book']
 

@@ -60,6 +60,11 @@ class BookRepository extends ServiceEntityRepository
                 ->setParameter('categoryId', $criteria->categoryId);
         }
 
+        if ($criteria->searchText !== null) {
+            $queryBuilder
+                ->andWhere('b.title LIKE :searchText or b.description LIKE :searchText')
+                ->setParameter('searchText', "%{$criteria->searchText}%");
+        }
 
         $queryBuilder->setMaxResults($criteria->itemsPerPage);
         $queryBuilder->setFirstResult(($criteria->page - 1) * $criteria->itemsPerPage);

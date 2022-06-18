@@ -280,6 +280,14 @@ class Book
         return $this->readAt;
     }
 
+    public function getReadAtAsString(): ?string
+    {
+        if ($this->readAt === null) {
+            return null;
+        }
+        return $this->readAt->format('yyyy-MM-dd');
+    }
+
     public function setUser(User $user): self
     {
         $this->user = $user;

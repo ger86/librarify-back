@@ -28,11 +28,13 @@ class BooksController extends AbstractFOSRestController
     ) {
         $authorId = $request->query->get('authorId');
         $categoryId = $request->query->get('categoryId');
+        $searchText = $request->query->get('searchText');
         $page = $request->query->get('page');
         $itemsPerPage = $request->query->get('itemsPerPage');
         $criteria = new BookRepositoryCriteria(
             $authorId,
             $categoryId,
+            $searchText,
             $itemsPerPage !== null ? \intval($itemsPerPage) : 10,
             $page !== null ? \intval($page) : 1,
             $security->getCurrentUser()->getId()

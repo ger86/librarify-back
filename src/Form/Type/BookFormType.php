@@ -21,7 +21,7 @@ class BookFormType extends AbstractType
             ->add('base64Image', TextType::class)
             ->add('description', TextareaType::class)
             ->add('score', NumberType::class)
-            ->add('readAt', DateType::class, ['widget' => 'single_text', 'format' => 'dd/MM/yyyy', 'html5' => false])
+            ->add('readAt', DateType::class, ['widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'html5' => false])
             ->add('categories', CollectionType::class, [
                 'allow_add' => true,
                 'allow_delete' => true,
